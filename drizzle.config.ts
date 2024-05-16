@@ -2,8 +2,8 @@ import { defineConfig } from "drizzle-kit";
 import { config } from "dotenv";
 
 config({
-  path: ".dev.vars"
-})
+  path: ".dev.vars",
+});
 
 export default defineConfig({
   dialect: "postgresql",
@@ -13,5 +13,5 @@ export default defineConfig({
     url: process.env.DATABASE_URL!,
   },
   verbose: true,
-  strict: true
+  strict: true,
 });

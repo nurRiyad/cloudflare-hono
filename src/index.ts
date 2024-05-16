@@ -1,20 +1,22 @@
-import { neon } from '@neondatabase/serverless'
-import { drizzle } from 'drizzle-orm/neon-http'
-import { Hono } from 'hono'
-import { users } from './schema'
+import { Hono } from "hono";
+import { auth } from "./routes/auth";
+import { income } from "./routes/income";
+import { expense } from "./routes/expense";
+import { monthlyExpense } from "./routes/monthlyExpense";
+import { saving } from "./routes/saving";
+import { share } from "./routes/share";
 
 export type Env = {
-  DATABASE_URL: string
-}
+  DATABASE_URL: string;
+};
 
-const app = new Hono<{Bindings: Env}>()
+const app = new Hono();
 
-app.get('/', async(c) => {
-  const sql = neon(c.env.DATABASE_URL)
-  const db = drizzle(sql)
+app.route("/auth", auth);
+app.route("/income", income);
+app.route("expense", expense);
+app.route("monthlyExpense", monthlyExpense);
+app.route("saving", saving);
+app.route("share", share);
 
-  const allUser = await db.select().from(users) || []
-  return c.json(allUser)
-})
-
-export default app
+export default app;
