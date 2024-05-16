@@ -12,6 +12,13 @@ export type Env = {
 
 const app = new Hono();
 
+app.get("/", (c) => {
+  return c.json({
+    name: "Expense tracker app",
+    githubRepo: "https://github.com/nurRiyad/cloudflare-hono",
+  });
+});
+
 app.route("/auth", auth);
 app.route("/income", income);
 app.route("expense", expense);
