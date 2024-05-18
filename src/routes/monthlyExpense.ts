@@ -1,8 +1,5 @@
 import { Hono } from "hono";
-
-export type Env = {
-  DATABASE_URL: string;
-};
+import { Env } from "../index";
 
 export const monthlyExpense = new Hono<{ Bindings: Env }>();
 
