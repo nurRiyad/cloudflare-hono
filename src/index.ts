@@ -10,6 +10,13 @@ export type Env = {
 
 const app = new Hono<{ Bindings: Env }>();
 
+app.get("/", (c) => {
+  return c.json({
+    name: "Budget Tracker",
+    repo: "https://github.com/nurRiyad/cloudflare-hono",
+  });
+});
+
 app.use("/api/*", (c, next) => {
   const jwtMiddleware = jwt({
     secret: c.env.JWT_TOKEN,
