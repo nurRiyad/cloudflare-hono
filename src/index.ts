@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { route } from "./routes";
 import { auth } from "./routes/auth";
-import { jwt } from "hono/jwt";
+import { HTTPException } from "hono/http-exception";
 
 export type Env = {
   DATABASE_URL: string;
@@ -17,15 +17,15 @@ app.get("/", (c) => {
   });
 });
 
-app.use("/api/*", (c, next) => {
-  const jwtMiddleware = jwt({
-    secret: c.env.JWT_TOKEN,
-    cookie: "budget_key",
-  });
-  return jwtMiddleware(c, next);
-});
-
 app.route("/api", route);
 app.route("/auth", auth);
+
+// error handler
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+  return c.json({ message: "Don't know what happen" }, 500);
+});
 
 export default app;

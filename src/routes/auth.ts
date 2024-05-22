@@ -7,6 +7,7 @@ import { sign } from "hono/jwt";
 import { HTTPException } from "hono/http-exception";
 import { eq } from "drizzle-orm";
 import { comparePassword, hashPassword } from "../utils/hash";
+import { NeonDbError } from "@neondatabase/serverless";
 
 export const auth = new Hono<{ Bindings: Env }>();
 
@@ -25,10 +26,7 @@ auth.post("/signup", async (c, next) => {
     const newUser = { name: username, password: hPassword, email: email };
     const users = await db.insert(usersTable).values(newUser).returning();
 
-    console.log(users);
-
     const { password: pass, ...user } = users[0];
-
     const token = await sign(user, c.env.JWT_TOKEN);
     setCookie(c, "budget_key", token, {
       path: "/",
@@ -38,6 +36,9 @@ auth.post("/signup", async (c, next) => {
     });
     return c.json(user);
   } catch (error) {
+    if (error instanceof NeonDbError) {
+      return c.json({ message: error.message }, 500);
+    }
     if (error instanceof HTTPException) throw error;
     else throw new HTTPException(500, { message: "Something went wrong" });
   }
@@ -63,9 +64,6 @@ auth.post("/login", async (c) => {
     }
 
     const isMatch = await comparePassword(password, dbUser.password);
-
-    console.log({ isMatch });
-
     if (!isMatch) {
       throw new HTTPException(401, { message: "Unauthorize" });
     }
@@ -80,6 +78,9 @@ auth.post("/login", async (c) => {
     });
     return c.json(user);
   } catch (error) {
+    if (error instanceof NeonDbError) {
+      return c.json({ message: error.message }, 500);
+    }
     if (error instanceof HTTPException) throw error;
     else throw new HTTPException(500, { message: "Something went wrong" });
   }
@@ -90,14 +91,4 @@ auth.get("/logout", (c) => {
   return c.json({
     message: "Logged out successfully",
   });
-});
-
-auth.get("/me", async (c) => {
-  try {
-    const { db } = getDB(c.env.DATABASE_URL);
-    const allUser = (await db.select().from(usersTable)) || [];
-    return c.json(allUser);
-  } catch (error) {
-    return c.json({ msg: "Something went wrong" });
-  }
 });
