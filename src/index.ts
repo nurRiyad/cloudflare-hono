@@ -3,6 +3,7 @@ import { route } from "./routes";
 import { auth } from "./routes/auth";
 import { HTTPException } from "hono/http-exception";
 import { prettyJSON } from "hono/pretty-json";
+import { secureHeaders } from "hono/secure-headers";
 
 // Define the environment variables
 export type Env = {
@@ -12,6 +13,7 @@ export type Env = {
 
 const app = new Hono<{ Bindings: Env }>();
 
+app.use(secureHeaders());
 app.use(prettyJSON());
 
 app.get("/", (c) => {
