@@ -45,13 +45,13 @@ export const savingsTable = pgTable("savings", {
 export const shareType = pgEnum("type", ["lend", "borrow"]);
 
 export const sharesTable = pgTable("shares", {
-  id: uuid("id").primaryKey().notNull(),
-  type: shareType("type").notNull().default("borrow"),
+  id: uuid("id").primaryKey().defaultRandom(),
+  type: shareType("type").notNull(),
   who: text("who").notNull(),
   amount: integer("amount").notNull(),
   userId: uuid("user_id")
     .references(() => usersTable.id)
     .notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  resolveAt: timestamp("resolve_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  resolveAt: timestamp("resolve_at").defaultNow(),
 });

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { Env } from "../index";
 import { HTTPException } from "hono/http-exception";
 import { getDB } from "../db";
-import { incomesTable, savingsTable } from "../schema";
+import { savingsTable } from "../schema";
 import { NeonDbError } from "@neondatabase/serverless";
 import { eq } from "drizzle-orm";
 
