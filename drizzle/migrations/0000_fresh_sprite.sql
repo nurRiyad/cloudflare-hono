@@ -32,13 +32,13 @@ CREATE TABLE IF NOT EXISTS "savings" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "shares" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"type" "type" DEFAULT 'borrow' NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"type" "type" NOT NULL,
 	"who" text NOT NULL,
 	"amount" integer NOT NULL,
 	"user_id" uuid NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"resolve_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now(),
+	"resolve_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (

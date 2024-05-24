@@ -1,5 +1,5 @@
 {
-  "id": "bf475efe-b33f-4eb0-bf5d-b8b1fe4a6608",
+  "id": "db2eeb60-a18a-4a99-a751-a693c3452417",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "6",
   "dialect": "postgresql",
@@ -201,15 +201,15 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "type": {
           "name": "type",
           "type": "type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'borrow'"
+          "notNull": true
         },
         "who": {
           "name": "who",
@@ -233,14 +233,14 @@
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
         "resolve_at": {
           "name": "resolve_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         }
       },
