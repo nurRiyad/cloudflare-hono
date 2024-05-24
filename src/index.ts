@@ -20,6 +20,11 @@ app.get("/", (c) => {
 app.route("/api", route);
 app.route("/auth", auth);
 
+// not found handler
+app.notFound((c) => {
+  return c.json({ message: "Not found" }, 404);
+});
+
 // error handler
 app.onError((err, c) => {
   if (err instanceof HTTPException) {

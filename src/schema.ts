@@ -10,47 +10,36 @@ export const usersTable = pgTable("users", {
 });
 
 export const incomesTable = pgTable("incomes", {
-  id: uuid("id").primaryKey().notNull(),
+  id: uuid("id").primaryKey().defaultRandom(),
   from: text("from").notNull(),
   amount: integer("amount").notNull(),
   userId: uuid("user_id")
     .references(() => usersTable.id)
     .notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const expensesTable = pgTable("expenses", {
-  id: uuid("id").primaryKey().notNull(),
+  id: uuid("id").primaryKey().defaultRandom(),
   on: text("on").notNull(),
   amount: integer("amount").notNull(),
   userId: uuid("user_id")
     .references(() => usersTable.id)
     .notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
-
-export const monthlyExpenseTable = pgTable("monthly_expenses", {
-  id: uuid("id").primaryKey().notNull(),
-  on: text("on").notNull(),
-  amount: integer("amount").notNull(),
-  userId: uuid("user_id")
-    .references(() => usersTable.id)
-    .notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const savingsTable = pgTable("savings", {
-  id: uuid("id").primaryKey().notNull(),
+  id: uuid("id").primaryKey().defaultRandom(),
   topic: text("topic").notNull(),
   amount: integer("amount").notNull(),
   userId: uuid("user_id")
     .references(() => usersTable.id)
     .notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const shareType = pgEnum("type", ["lend", "borrow"]);
