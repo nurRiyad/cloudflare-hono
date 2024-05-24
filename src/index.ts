@@ -2,13 +2,17 @@ import { Hono } from "hono";
 import { route } from "./routes";
 import { auth } from "./routes/auth";
 import { HTTPException } from "hono/http-exception";
+import { prettyJSON } from "hono/pretty-json";
 
+// Define the environment variables
 export type Env = {
   DATABASE_URL: string;
   JWT_TOKEN: string;
 };
 
 const app = new Hono<{ Bindings: Env }>();
+
+app.use(prettyJSON());
 
 app.get("/", (c) => {
   return c.json({
